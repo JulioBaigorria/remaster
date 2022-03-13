@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # from apps.utils import SoftDeleteQuerySet, SoftDeleteManager, DeletedQuerySet, DeletedManager
 
 
@@ -9,6 +10,7 @@ class Common(models.Model):
 
     class Meta:
         abstract = True
+        ordering = ['name']
 
 
 class ToxicityLabel(Common):
@@ -17,6 +19,7 @@ class ToxicityLabel(Common):
 
     class Meta:
         db_table = 'toxicity_label'
+        ordering = ['category']
 
     def __str__(self):
         return f'{self.category} - {self.color}'
@@ -26,7 +29,7 @@ class ActiveIngredient(Common):
     name = models.CharField('Active Ingredient and ', max_length=70, unique=True)
 
     class Meta:
-        ordering = ['-name']
+        ordering = ['name']
 
     def __str__(self):
         return f'{self.name}'
@@ -40,11 +43,14 @@ class Type(Common):
 
 
 class Formulation(models.Model):
-    name = models.CharField('Formulation', max_length=50)
     symbol = models.CharField('Symbol', max_length=4)
+    name = models.CharField('Name', max_length=50)
+
+    class Meta:
+        ordering = ['symbol']
 
     def __str__(self):
-        return f'{self.name} {self.symbol}'
+        return f'{self.symbol} - {self.name}'
 
 
 class Product(Common):
@@ -52,7 +58,9 @@ class Product(Common):
     cod_senasa = models.CharField('Product code', max_length=10, unique=True)
     types = models.ManyToManyField(Type, related_name="products")
     act_ingredients = models.ManyToManyField(ActiveIngredient, related_name="products")
+    formulations = models.ManyToManyField(Formulation, related_name="products")
     tox_labels = models.ManyToManyField(ToxicityLabel, related_name="products")
+    is_trazable = models.BooleanField('Is trazable?', default=False)
 
     def __str__(self):
         return f'{self.name}'
