@@ -9,8 +9,23 @@ from apps.products.models import ActiveIngredient
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        file = 'apps/products/management/principios_activos.xlsx'
-        newdata = pd.read_excel(file).drop_duplicates()
-        objs = [ActiveIngredient(name=i[0]) for i in newdata.values]
-        ActiveIngredient.objects.bulk_create(objs, 100)
+        file = 'apps/products/management/productos.xlsx'
+        newdata = pd.read_excel(file)
+        # print(newdata.head())
+        arrobjt = newdata["CIPERMETRINA"].drop_duplicates()
+        cleanobjs = []
+        for i in arrobjt:
+            if "+" in i:
+                print("asd")
+                a = []
+                a = i.split('+')
+                a[0].strip()
+                a[0].strip()
+                cleanobjs.append(a[0].strip())
+                cleanobjs.append(a[1].strip())
+                print(a[0], a[1])
+            else:
+                cleanobjs.append(i.strip())
 
+        objs = [ActiveIngredient(name=str(i)) for i in set(cleanobjs)]
+        ActiveIngredient.objects.bulk_create(objs, 100)

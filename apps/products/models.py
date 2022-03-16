@@ -53,7 +53,7 @@ class Formulation(models.Model):
         return f'{self.symbol} - {self.name}'
 
 
-class Product(Common):
+class Product(Common, models.Model):
     name = models.CharField('Official registered name', max_length=100)
     cod_senasa = models.CharField('Product code', max_length=10, unique=True)
     types = models.ManyToManyField(Type, related_name="products")
