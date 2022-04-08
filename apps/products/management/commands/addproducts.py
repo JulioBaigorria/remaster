@@ -24,7 +24,7 @@ class Command(BaseCommand):
         file = 'apps/products/management/productos.xlsx'
         objs = []
         try:
-            newdata = pd.read_excel(file).drop_duplicates(subset="codsenasa", keep="last")
+            newdata = pd.read_excel(file).drop_duplicates(subset=37966, keep="last")
         except FileNotFoundError:
             print("alskdf")
         for i in newdata.values:
@@ -32,4 +32,5 @@ class Command(BaseCommand):
             cod = str(i[10])
             objs.append(Product(name=name, cod_senasa=cod))
         print(objs)
-        # Product.objects.bulk_create(objs, 100)
+        Product.objects.bulk_create(objs, 100)
+

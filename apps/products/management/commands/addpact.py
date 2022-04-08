@@ -12,7 +12,7 @@ class Command(BaseCommand):
         file = 'apps/products/management/productos.xlsx'
         newdata = pd.read_excel(file)
         # print(newdata.head())
-        arrobjt = newdata["CIPERMETRINA"].drop_duplicates()
+        arrobjt = newdata["2,4-D EQUIVALENTE ACIDO"].drop_duplicates()
         cleanobjs = []
         for i in arrobjt:
             if "+" in i:

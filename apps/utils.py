@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 
 
+
 class SoftDeleteQuerySet(models.query.QuerySet):
     def delete(self):
         return self.update(is_deleted=True, deleted_at=timezone.now())
@@ -24,3 +25,5 @@ class DeletedQuerySet(models.query.QuerySet):
 class DeletedManager(models.Manager):
     def get_queryset(self):
         return DeletedQuerySet(self.model, self._db).filter(is_deleted=True)
+
+
