@@ -13,4 +13,9 @@ class HRAccessPolicy(AccessPolicy):
             "principal": ["group:Driver"],
             "effect": "allow"
         },
+        {
+            "action": ["list", "*"],
+            "principal": ["*"],
+            "effect": "allow"
+        },
     ]

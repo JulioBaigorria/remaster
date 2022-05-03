@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.signals import post_save, pre_save
 from django.conf import settings
 
 
@@ -17,11 +18,11 @@ class VehicleType(models.Model):
 
 class CommonVehicle(models.Model):
     """Common Abstract Vehicle Model"""
-    name = models.CharField('Vehicle Name', max_length=65, )
-    axes_quantity = models.IntegerField('Axes quantity', default=0)
-    type = models.ForeignKey(VehicleType, on_delete=models.CASCADE)
-    domain = models.CharField('Domain', max_length=20, null=True, default=None)
-    desc = models.CharField(max_length=65, default='', unique=False)
+    name = models.CharField('Vehicle Name', max_length=65, blank=True, )
+    axes_quantity = models.IntegerField('Axes quantity', default=0, blank=True)
+    type = models.ForeignKey(VehicleType, on_delete=models.CASCADE, )
+    domain = models.CharField('Domain', max_length=20, null=True, default=None, )
+    desc = models.CharField(max_length=65, default='', unique=False, blank=True)
 
     class Meta:
         abstract = True
@@ -29,8 +30,8 @@ class CommonVehicle(models.Model):
 
 class Vehicle(CommonVehicle):
     """Vehicle Class Model"""
-    fuel_type = models.ForeignKey(FuelType, on_delete=models.CASCADE)
-    last_odom = models.FloatField('Las odometer calculation', default=0)
+    fuel_type = models.ForeignKey(FuelType, on_delete=models.CASCADE, blank=True, null=True)
+    last_odom = models.FloatField('Las odometer calculation', default=0, blank=True)
 
     def __str__(self):
         return f'{self.name}'
@@ -46,26 +47,29 @@ class Payload(CommonVehicle):
 
 class Driver(models.Model):
     """Driver Class Model from User Model"""
-    name = models.ForeignKey(
+    user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
-    vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE, related_name='vehicle')
-    payload = models.ForeignKey(Vehicle, on_delete=models.CASCADE, related_name='payload')
+    vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE, related_name='vehicle', blank=True, null=True)
+    payload = models.ForeignKey(Payload, on_delete=models.CASCADE, related_name='payload', blank=True, null=True)
+
+    class Meta:
+        ordering = ['id']
 
     def __str__(self):
-        return f'{self.name}'
+        return f'{self.user}'
 
 
 class HR(models.Model):
     """HR Class Model"""
     driver = models.ForeignKey(Driver, on_delete=models.CASCADE, related_name='driver', null=True)
     vehicle = models.ForeignKey(Vehicle, null=True, on_delete=models.CASCADE, related_name='hr_vehicle',
-                                default='vehicle')
+                                blank=True, default=None)
     payload = models.ForeignKey(Payload, null=True, on_delete=models.CASCADE, related_name='hr_payload',
-                                default='payload')
+                                blank=True, default=None)
 
-    start_date = models.DateTimeField(null=True)
+    start_date = models.DateTimeField(auto_now_add=True)
     end_date = models.DateTimeField(null=True)
 
     start_odom = models.FloatField(default=0)
@@ -86,6 +90,48 @@ class HR(models.Model):
         return self.end_date - self.start_date
 
 
+class DriverAccountMovement(models.Model):
+    debit = models.FloatField(max_length=50000, blank=True, null=True)
+    credit = models.FloatField(max_length=50000, blank=True, null=True)
+    total = models.FloatField(max_length=50000, blank=True, null=True)
+    date = models.DateTimeField(auto_now_add=True)
+    driver = models.ForeignKey(
+        Driver,
+        on_delete=models.CASCADE,
+    )
+
+    class Meta:
+        ordering = ['-date']
+
+    def __str__(self):
+        return f"{self.driver}'s movement"
+
+
 class DriverAccount(models.Model):
-    owner = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='account')
-    total_balance = models.FloatField(max_length=500000)
+    driver = models.OneToOneField(Driver,
+                                  on_delete=models.CASCADE, related_name='account')
+    movements = models.ForeignKey(DriverAccountMovement, on_delete=models.CASCADE, related_name='movements', blank=True,
+                                  null=True)
+    total = 50000
+
+    class Meta:
+        ordering = ['driver']
+
+    def __str__(self):
+        return f"{self.driver}'s movement"
+
+    def get_total_balance(self):
+        total_balance = DriverAccountMovement.objects.filt
+
+
+def add_first_movement(sender, instance, **kwargs):
+    first_mov = DriverAccountMovement.objects.create(debit=50000, credit=0, total=50000, driver=instance.driver)
+    first_mov.save()
+
+# def get_end_odom():
+#     query = HR.objects.filter(driver=44).all()
+#     print(len(query))
+
+
+# post_save.connect(add_first_movement, sender=DriverAccount)
+post_save.connect(add_first_movement, sender=DriverAccount)

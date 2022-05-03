@@ -1,12 +1,28 @@
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.views import APIView
-from rest_framework_simplejwt.token_blacklist.models import OutstandingToken, BlacklistedToken
-from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework import mixins, viewsets
+from rest_framework_simplejwt.token_blacklist.models import OutstandingToken, BlacklistedToken
+from rest_framework_simplejwt.tokens import RefreshToken
+from . import serializers
+from .models import User
 
 
-class LogOutView(APIView):
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = serializers.UserListSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return serializers.UserRetrieveSerializer
+        if self.action == 'list':
+            return serializers.UserListSerializer
+        elif self.action == 'create':
+            return serializers.UserCreateSerializer
+        return self.serializer_class
+
+
+class LogOutView(mixins.CreateModelMixin, viewsets.GenericViewSet):
     permission_classes = (IsAuthenticated,)
 
     def post(self, request):
@@ -21,7 +37,7 @@ class LogOutView(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-class LogOutAllView(APIView):
+class LogOutAllView(mixins.CreateModelMixin, viewsets.GenericViewSet):
     permission_classes = (IsAuthenticated,)
 
     def post(self, request):

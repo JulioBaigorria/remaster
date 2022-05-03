@@ -15,31 +15,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-
-from apps.products import views as pviews
-from apps.logistic import views as lviews
-from rest_framework.documentation import include_docs_urls
-from apps.users.views import LogOutView, LogOutAllView
 from rest_framework.schemas import get_schema_view
+from rest_framework.documentation import include_docs_urls
 from rest_framework import routers
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
-    TokenRefreshView,
-)
+    TokenRefreshView,)
 
-router = routers.SimpleRouter()
-
-router.register(r'logistic/hr', lviews.HRViewSet),
-router.register(r'products/active', pviews.ActiveIngredientViewSet),
-router.register(r'products', pviews.ProductsViewSet),
+router = routers.DefaultRouter()
 
 urlpatterns = [
-    path('api/', include(router.urls)),
-    path('api/logout/', LogOutView.as_view(), name='logout'),
-    path('api/logout/all/', LogOutAllView.as_view(), name='logout_all'),
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('admin/', admin.site.urls),
+    path('api/users/', include('apps.users.urls')),
+    path('api/products/', include('apps.products.urls')),
+    path('api/logistic/', include('apps.logistic.urls')),
+    path('token/', TokenObtainPairView.as_view()),
+    path('token/refresh/', TokenRefreshView.as_view()),
     path('docs/', include_docs_urls(title='Remaster')),
     path('', get_schema_view(
         title='Remaster',
