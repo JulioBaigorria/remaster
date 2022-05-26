@@ -5,9 +5,9 @@ services:
     image: mysql:5.6.51
     restart: always
     volumes:
-     - ~/opt/local/remaster_volume:/var/lib/postgresql/
+     - ~/opt/local/remaster_volume:/var/lib/mysql/
     environment:
-     - .venv
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
 
   web:
     build:

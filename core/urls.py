@@ -29,6 +29,7 @@ router = routers.DefaultRouter()
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/users/', include('apps.users.urls')),
+    path('api/clients/', include('apps.clients.urls')),
     path('api/products/', include('apps.products.urls')),
     path('api/logistic/', include('apps.logistic.urls')),
     path('token/', TokenObtainPairView.as_view()),

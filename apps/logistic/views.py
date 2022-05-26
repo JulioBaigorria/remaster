@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 from . import serializers
-from .permissions import HRAccessPolicy
+from .permissions import HRPermission
 from .models import HR, DriverAccount, Driver, VehicleType, Vehicle, Payload
 
 
@@ -31,7 +31,7 @@ class VehicleViewSet(viewsets.ModelViewSet):
 
 
 class HRViewSet(viewsets.ModelViewSet):
-    permission_classes = (HRAccessPolicy,)
+    permission_classes = (HRPermission,)
     queryset = HR.objects.all()
     serializer_class = serializers.HRListSerializer
 

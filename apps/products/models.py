@@ -1,3 +1,4 @@
+from apps.clients.models import Client
 from django.db import models
 
 
@@ -55,12 +56,14 @@ class Formulation(models.Model):
 
 class Product(Common, models.Model):
     name = models.CharField('Official registered name', max_length=100)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, null=True, blank=True)
     cod_senasa = models.CharField('Product code', max_length=10, unique=True)
     types = models.ManyToManyField(Type, related_name="products")
     act_ingredients = models.ManyToManyField(ActiveIngredient, related_name="products")
     formulations = models.ManyToManyField(Formulation, related_name="products")
     tox_labels = models.ManyToManyField(ToxicityLabel, related_name="products")
     is_trazable = models.BooleanField('Is trazable?', default=False)
+
 
     def __str__(self):
         return f'{self.name}'

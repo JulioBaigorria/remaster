@@ -49,7 +49,7 @@ class Driver(models.Model):
     """Driver Class Model from User Model"""
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
+        on_delete=models.CASCADE, blank=True, null=True
     )
     vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE, related_name='vehicle', blank=True, null=True)
     payload = models.ForeignKey(Payload, on_delete=models.CASCADE, related_name='payload', blank=True, null=True)

@@ -1,10 +1,11 @@
-from django.contrib.auth.models import User, Group
 from rest_framework.permissions import BasePermission
 
 
-class HRPermission(BasePermission):
+class ClientPermission(BasePermission):
     def has_permission(self, request, view):
-        if request.user.groups.filter(name='Driver').exists():
+        if request.user.groups.filter(name='Logistic').exists() or \
+            request.user.groups.filter(name='Client').exists() or \
+                request.user.groups.filter(name='Administration').exists():
             return True
 
 # class HRAccessPolicy(AccessPolicy):
