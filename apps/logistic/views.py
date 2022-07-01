@@ -42,6 +42,8 @@ class HRViewSet(viewsets.ModelViewSet):
             return serializers.HRListSerializer
         if self.action == 'update':
             return serializers.HRUpdateSerializer
+        if self.action == 'destroy':
+            return serializers.HRDestroySerializer
         elif self.action == 'create':
             return serializers.HRCreateSerializer
         return self.serializer_class

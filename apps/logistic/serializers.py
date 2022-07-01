@@ -100,6 +100,12 @@ class HRRetrieveSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class HRDestroySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HR
+        fields = ('id',)
+
+
 class DriverRetrieveSerializer(serializers.ModelSerializer):
     class Meta:
         model = Driver

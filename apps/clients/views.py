@@ -1,10 +1,13 @@
 from rest_framework import viewsets
+from rest_framework.permissions import AllowAny
+
 from . import serializers
 from .permissions import ClientPermission
 from .models import Client
 
+
 class ClientViewSet(viewsets.ModelViewSet):
-    permission_classes = (ClientPermission,)
+    # permission_classes = (AllowAny,)
     queryset = Client.objects.all()
     serializer_class = serializers.ClientListSerializer
 
@@ -12,7 +15,7 @@ class ClientViewSet(viewsets.ModelViewSet):
         if self.action == 'retrieve':
             return serializers.ClientRetrieveSerializer
         if self.action == 'list':
-            return serializers.VehicleListSerializer
+            return serializers.ClientListSerializer
         if self.action == 'update':
             return serializers.ClientCreateOrUpdateSerializer
         elif self.action == 'create':
