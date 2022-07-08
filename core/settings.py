@@ -73,15 +73,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
 
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOW_CREDENTIALS = True
@@ -95,28 +86,16 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:5500',
 ]
 
-# CORS_ALLOW_METHODS = [
-#     'DELETE',
-#     'GET',
-#     'OPTIONS',
-#     'PATCH',
-#     'POST',
-#     'PUT',
-# ]
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': os.environ["MYSQL_DATABASE"],
-#         'USER': os.environ["MYSQL_USER"],
-#         'PASSWORD': os.environ["MYSQL_PASSWORD"],
-#         'HOST': os.environ["MYSQL_DATABASE_HOST"],
-#         'PORT': os.environ["MYSQL_DATABASE_PORT"],
-#         'OPTIONS': {
-#             'sql_mode': 'traditional', }
-#
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': os.environ["ENGINE"],
+        'NAME': os.environ["NAME"],
+        'USER': os.environ["USER"],
+        'PASSWORD': os.environ["PASSWORD"],
+        'HOST': os.environ["HOST"],
+        'PORT': os.environ["PORT"],
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
