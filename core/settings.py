@@ -21,7 +21,7 @@ load_dotenv('.env')
 
 SECRET_KEY = os.environ["SECRET_KEY"]
 
-DEBUG = False
+DEBUG = os.environ["DEBUG"]
 
 ALLOWED_HOSTS = ['*']
 
@@ -74,17 +74,17 @@ TEMPLATES = [
 WSGI_APPLICATION = 'core.wsgi.application'
 
 
-CORS_ORIGIN_ALLOW_ALL = False
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_HEADERS = [
-    'Authorization',
-]
+# CORS_ORIGIN_ALLOW_ALL = False
+# CORS_ALLOW_CREDENTIALS = True
+# CORS_ALLOW_HEADERS = [
+#     'Authorization',
+# ]
 
-CORS_ALLOWED_ORIGINS = [
-    "http://0.0.0.0:8000",
-    "http://127.0.0.1:5500",
-    'http://localhost:5500',
-]
+# CORS_ALLOWED_ORIGINS = [
+#     "http://0.0.0.0:8000",
+#     "http://127.0.0.1:5500",
+#     'http://localhost:5500',
+# ]
 
 DATABASES = {
     'default': {
