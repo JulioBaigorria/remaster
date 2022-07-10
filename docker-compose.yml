@@ -7,9 +7,9 @@ services:
     volumes:
      - ~/opt/local/remaster_volume:/var/lib/postgresql/data
     environment:
-      - POSTGRES_DB=${NAME}
-      - POSTGRES_USER=${USER}
-      - POSTGRES_PASSWORD=${PASSWORD}
+      - POSTGRES_DB=${DDBNAME}
+      - POSTGRES_USER=${DDBUSER}
+      - POSTGRES_PASSWORD=${DDBPASSWORD}
 
   web:
     build:

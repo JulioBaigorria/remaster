@@ -16,5 +16,4 @@ RUN pip install --no-cache-dir --upgrade -r /tmp/requirements.txt
 # copy project
 ADD . /django
 EXPOSE 8000
-RUN python manage.py collectstatic --noinput
 CMD gunicorn --workers 1 --log-level INFO --bind '0.0.0.0:8000' core.wsgi:application
