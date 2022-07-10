@@ -21,7 +21,7 @@ load_dotenv('.env')
 
 SECRET_KEY = os.environ["SECRET_KEY"]
 
-DEBUG = False
+DEBUG = os.environ["DEBUG"]
 
 ALLOWED_HOSTS = ['*']
 
@@ -73,22 +73,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
 DATABASES = {
-    "default": {
-        "ENGINE": os.environ['DBENGINE'],
-        "NAME": os.environ['DBNAME'],
-        "USER": os.environ['DBUSER'],
-        "PASSWORD": os.environ['DBPASSWORD'],
-        "HOST": os.environ['DBHOST'],
-        "PORT": os.environ['DBPORT'],
+    'default': {
+        'ENGINE': os.environ["DBENGINE"],
+        'NAME': os.environ["DBNAME"],
+        'USER': os.environ["DBUSER"],
+        'PASSWORD': os.environ["DBPASSWORD"],
+        'HOST': os.environ["DBHOST"],
+        'PORT': os.environ["DBPORT"],
     }
 }
-
-# Password validation
-# https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
