@@ -88,14 +88,22 @@ CORS_ALLOWED_ORIGINS = [
 
 DATABASES = {
     'default': {
-        'ENGINE': os.environ["ENGINE"],
-        'NAME': os.environ["NAME"],
-        'USER': os.environ["USER"],
-        'PASSWORD': os.environ["PASSWORD"],
-        'HOST': os.environ["HOST"],
-        'PORT': os.environ["PORT"],
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'mydatabase', # This is where you put the name of the db file.
+                 # If one doesn't exist, it will be created at migration time.
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'remasterdb',
+#         'USER': 'remaster',
+#         'PASSWORD': 'password',
+#         'HOST': 'remasterdb.cyv9h4pucsvu.us-east-2.rds.amazonaws.com',
+#         'PORT': '',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
