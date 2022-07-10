@@ -94,16 +94,16 @@ DATABASES = {
     }
 }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'remasterdb',
-#         'USER': 'remaster',
-#         'PASSWORD': 'password',
-#         'HOST': 'remasterdb.cyv9h4pucsvu.us-east-2.rds.amazonaws.com',
-#         'PORT': '',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': os.environ["ENGINE"],
+        'NAME': os.environ["NAME"],
+        'USER': os.environ["USER"],
+        'PASSWORD': os.environ["PASSWORD"],
+        'HOST': os.environ["HOST"],
+        'PORT': os.environ["PORT"],
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
